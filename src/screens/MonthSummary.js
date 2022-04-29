@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { BsPlusCircle } from "react-icons/bs";
 
 function MonthSummary() {
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
     const [amount, setAmount] = useState('');
 
-    const categories = ['Food', 'Entertainment', 'Necessities', 'Groceries', 'Travel', 'Necessities', 'Household Items'];
+    const categories = ['Food', 'Entertainment', 'Necessities', 'Groceries', 'Travel', 'Household Items'];
 
     const handleAddCost = (event) => {
         event.preventDefault();
-        console.log(description);
+        console.log(category, description, amount);
     }
 
     return (
@@ -26,7 +25,8 @@ function MonthSummary() {
                         </div>
                         <div className='costFormItem'>
                             <label htmlFor='category'>Category: </label>
-                            <select id='category' name='category'>
+                            <select id='category' name='category' defaultValue={'DEFAULT'} onChange={(el) => { setCategory(el.target.value) }}>
+                                <option value='DEFAULT' disabled>Select Category</option>
                                 {categories.map(item => (
                                     <option key={item}>{item}</option>
                                 ))}
@@ -39,9 +39,9 @@ function MonthSummary() {
                         <button onClick={handleAddCost}>Add</button>
                     </form>
                 </div>
-                <div>
+                <div className='costList'>
                     <div className='costItem'>
-                        <p>Cost</p>
+                        <p>Description</p>
                         <p>Category</p>
                         <p>Amount</p>
                     </div>
