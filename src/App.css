@@ -1,38 +1,117 @@
+:root {
+  --background: #052c39;
+  --darker: #0D3C4A;
+  --lighter: #135264;
+  --text: #ECECEC;
+}
+
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html, body, #root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .App {
-  text-align: center;
+  color: var(--text);
+  height: 80%;
+  width: 85%;
+  border-radius: 10px;
+  background-color: var(--darker);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.monthContainer {
+  display: flex;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.costs {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  box-sizing: border-box;
+  flex-basis: 30%;
+  padding: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.costInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: var(--lighter);
+  width: 70%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.costInput h3 {
+  margin: 5px 0;
+}
+
+.costForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 0;
+  width: 90%;
+}
+
+.costForm > * {
+  margin-top: 15px;
+}
+
+.costFormItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.costInput input:focus {
+  border: 1px solid var(--darker);
+  outline: none;
+}
+
+.costItem {
+  display: flex;
+  align-items: center;
+}
+
+.costItem > * {
+  padding: 0 5px;
+}
+
+#description, #amount {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
+
+#category {
+  width: 50%;
+  padding: 3px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
+
+#category:focus {
+  outline: none;
 }
