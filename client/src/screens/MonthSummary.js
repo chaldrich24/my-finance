@@ -1,17 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase-config';
+import { doc, setDoc, addDoc, collection, getDoc, onSnapshot, query, getDocs, orderBy } from 'firebase/firestore';
+import dateFormat from '../helpers/dateFormat';
 
 function MonthSummary(props) {
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
     const [amount, setAmount] = useState('');
+    const [date, setDate] = useState('');
+    const [costList, setCostList] = useState();
+    const [loading, setLoading] = useState(true);
 
     const categories = ['Food', 'Entertainment', 'Necessities', 'Groceries', 'Travel', 'Household Items'];
 
-    const handleAddCost = (event) => {
-        event.preventDefault();
-        console.log(category, description, amount);
-    }
-    console.log(props.categories);
+    // const handleAddCost = async (event) => {
+    //     event.preventDefault();
+    //     console.log(category, description, amount, date);
+    //     try {
+    //         const docRef = await addDoc(collection(db, `users/${props.user.uid}/costs`), {
+    //             description: description,
+    //             category: category,
+    //             amount: amount,
+    //             date: date
+    //         });
+    //         console.log(docRef);
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
+    console.log(props.user.uid);
+
+    useEffect(() => {
+        
+    }, [])
 
     return (
         <div className='monthContainer'>
@@ -35,25 +56,34 @@ function MonthSummary(props) {
                         </div>
                         <div className='costFormItem'>
                             <label htmlFor='amount'>Amount: </label>
-                            <div className='costFormItem' style={{justifyContent:'flex-end'}}>
+                            <div className='costFormItem' style={{ justifyContent: 'flex-end' }}>
                                 <span className='dollarSign'>$</span>
                                 <input onChange={(el) => { setAmount(el.target.value) }} type='number' min='0.01' step='0.01' id='amount' name='amount' />
                             </div>
                         </div>
-                        <button onClick={handleAddCost}>Add</button>
+                        <div className='costFormItem'>
+                            <label htmlFor='date'>Date: </label>
+                            <input onChange={(el) => { setDate(el.target.value) }} type='date' id='date' name='date' />
+                        </div>
+
+                        <button onClick={() => {}}>Add</button>
                     </form>
                 </div>
                 <div className='costList'>
-                    <div className='costItem'>
+                    <div className='costItem listHeading'>
+                        <p>Date</p>
                         <p>Description</p>
                         <p>Category</p>
                         <p>Amount</p>
                     </div>
-                    <div className='costItem'>
-                        <p>Description</p>
-                        <p>Category</p>
-                        <p>Amount</p>
-                    </div>
+                    {/* {!loading && costList.map((cost) => (
+                        <div className='costItem'>
+                            <p>{dateFormat(cost.date)}</p>
+                            <p>{cost.description}</p>
+                            <p>{cost.category}</p>
+                            <p>${Number.parseFloat(cost.amount).toFixed(2)}</p>
+                        </div>
+                    ))} */}
                 </div>
             </div>
         </div>

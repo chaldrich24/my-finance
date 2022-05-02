@@ -131,12 +131,18 @@ button:active {
 .costItem {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 100%;
+}
+
+.listHeading {
+  font-weight: 800;
+  font-size: 18px;
 }
 
 .costItem > * {
   padding: 0 5px;
+  flex-basis: 20%;
 }
 
 .costItem p {
