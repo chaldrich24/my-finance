@@ -18,13 +18,42 @@ html, body, #root {
   flex-direction: column;
 }
 
-#root {
+button {
+  border-radius: 7px;
+  background-color: #fff;
+  border: 1px solid var(--background);
+  padding: 3px 10px;
+}
+
+button:active {
+  background-color: rgb(185, 185, 185);
+}
+
+.page {
   flex: 1;
   background-color: var(--background);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+}
+
+.nav {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  margin: 15px 0;
+}
+
+.nav > * {
+  color: #fff;
+}
+
+.nav button {
+  background-color: transparent;
+  font-size: 15px;
+  cursor: pointer;
 }
 
 .App {
@@ -45,7 +74,7 @@ html, body, #root {
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  flex-basis: 30%;
+  flex-basis: 40%;
   padding: 10px;
 }
 
@@ -57,7 +86,8 @@ html, body, #root {
   border-radius: 5px;
   padding: 10px;
   background-color: var(--lighter);
-  width: 70%;
+  width: 50%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
 }
 
 .costInput h3 {
@@ -71,6 +101,14 @@ html, body, #root {
   justify-content: space-between;
   margin: 5px 0;
   width: 90%;
+}
+
+.costList {
+  overflow-y: scroll;
+}
+
+.costList::-webkit-scrollbar {
+  width: 12px;
 }
 
 .costForm > * {
@@ -101,6 +139,15 @@ html, body, #root {
   padding: 0 5px;
 }
 
+.costItem p {
+  margin: 5px 0;
+}
+
+.dollarSign {
+  color: #fff;
+  margin-right: 3px;
+}
+
 #description, #amount {
   padding: 5px;
   border-radius: 5px;
@@ -108,7 +155,6 @@ html, body, #root {
 }
 
 #category {
-  width: 50%;
   padding: 3px;
   border-radius: 5px;
   border: 1px solid #fff;
@@ -116,4 +162,44 @@ html, body, #root {
 
 #category:focus {
   outline: none;
+}
+
+#description, #category {
+  width: 55%;
+}
+
+#amount {
+  width: 40%;
+  text-align: right;
+}
+
+/* LOGIN STYLES */
+.loginWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+}
+
+.loginFormItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.buttonLogin {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }

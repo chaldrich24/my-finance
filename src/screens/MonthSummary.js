@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function MonthSummary() {
+function MonthSummary(props) {
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
     const [amount, setAmount] = useState('');
@@ -11,6 +11,7 @@ function MonthSummary() {
         event.preventDefault();
         console.log(category, description, amount);
     }
+    console.log(props.categories);
 
     return (
         <div className='monthContainer'>
@@ -27,19 +28,27 @@ function MonthSummary() {
                             <label htmlFor='category'>Category: </label>
                             <select id='category' name='category' defaultValue={'DEFAULT'} onChange={(el) => { setCategory(el.target.value) }}>
                                 <option value='DEFAULT' disabled>Select Category</option>
-                                {categories.map(item => (
-                                    <option key={item}>{item}</option>
+                                {props.categories.map(item => (
+                                    <option key={item.id}>{item.data.name}</option>
                                 ))}
                             </select>
                         </div>
                         <div className='costFormItem'>
                             <label htmlFor='amount'>Amount: </label>
-                            <input onChange={(el) => { setAmount(el.target.value) }} type='text' id='amount' name='amount' />
+                            <div className='costFormItem' style={{justifyContent:'flex-end'}}>
+                                <span className='dollarSign'>$</span>
+                                <input onChange={(el) => { setAmount(el.target.value) }} type='number' min='0.01' step='0.01' id='amount' name='amount' />
+                            </div>
                         </div>
                         <button onClick={handleAddCost}>Add</button>
                     </form>
                 </div>
                 <div className='costList'>
+                    <div className='costItem'>
+                        <p>Description</p>
+                        <p>Category</p>
+                        <p>Amount</p>
+                    </div>
                     <div className='costItem'>
                         <p>Description</p>
                         <p>Category</p>
