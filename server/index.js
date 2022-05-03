@@ -1,31 +1,31 @@
-import {ApolloServer, gql} from 'apollo-server';
+import express from 'express';
+import { ApolloServer, gql } from 'apollo-server-express';
+import { typeDefs } from './schema/typeDefs';
+import { resolvers } from './schema/resolvers';
 
-const typeDefs = gql`
-    type User {
-        email: String
-        password: String
-    }
+const PORT = process.env.PORT || 4000;
+const app = express();
 
-    type Query {
-        users: [User]
-    }
-`;
+const startServer = async () => {
+   
+    const apolloServer = new ApolloServer({
+        typeDefs,
+        resolvers
+    });
 
-const users = [
-    {
-        email: 'dog',
-        password: 'animal'
-    }
-];
+    await apolloServer.start();
 
-const resolvers = {
-    Query: {
-        users: () => users,
-    }
-};
+    apolloServer.applyMiddleware({app: app});
 
-const server = new ApolloServer ({typeDefs, resolvers});
+    app.use((req, res) => {
+        res.send('Hollow')
+    })
+}
 
-server.listen().then(({url}) => {
-    console.log(`Server is running at ${url}`);
+startServer();
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
 });
+
+
