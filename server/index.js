@@ -1,31 +1,32 @@
-import express from 'express';
-import { ApolloServer, gql } from 'apollo-server-express';
-import { typeDefs } from './schema/typeDefs';
-import { resolvers } from './schema/resolvers';
+const { ApolloServer } = require('apollo-server');
+const mongoose = require('mongoose');
+const resolvers = require('./schema/resolvers');
+const typeDefs = require('./schema/typeDefs');
+const { authMiddleware } = require('./utils/auth');
+const path = require('path');
+
+require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 
 const PORT = process.env.PORT || 4000;
-const app = express();
 
-const startServer = async () => {
-   
-    const apolloServer = new ApolloServer({
-        typeDefs,
-        resolvers
+const apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: authMiddleware
+});
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+    .then(() => {
+        console.log('MongoDB connected!!');
+        return apolloServer.listen({ port: PORT });
+    })
+    .then((res) => {
+        console.log(`Server is running at ${res.url}`);
     });
 
-    await apolloServer.start();
 
-    apolloServer.applyMiddleware({app: app});
-
-    app.use((req, res) => {
-        res.send('Hollow')
-    })
-}
-
-startServer();
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-});
 
 
