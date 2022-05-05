@@ -1,65 +1,37 @@
+import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { db, auth } from '../firebase-config';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { LOGIN_USER } from '../api/mutations';
 
 function Login(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [login, { error }] = useMutation(LOGIN_USER);
 
-    // const createUser = async (userInfo) => {
-    //     try {
-    //         setDoc((db, 'users', userInfo.uid), {
-    //             email: userInfo.email,
-    //             uid: userInfo.uid
-    //         })
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    // }
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const { data } = await login({ variables: { email, password } });
+        console.log(data, error);
+        if (data) {
+            localStorage.setItem('token', data.login.token);
+            props.setLoggedIn(true);
+        }
 
-    // const handleSignup = async (e) => {
-    //     // setPassword((password) => hashPassword(password));
-    //     e.preventDefault();
-    //     console.log(email, password);
-    //     try {
-    //         const {user} = await createUserWithEmailAndPassword(auth, email, password);
-    //         await setDoc(doc(db, 'users', user.uid), {
-    //             email: user.email,
-    //             uid: user.uid
-    //         })
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // };
-
-    // const handleLogin = (e) => {
-    //     e.preventDefault();
-    //     signInWithEmailAndPassword(auth, email, password)
-    //         .then((user) => {
-    //             console.log(user.user);
-    //         })
-    //         .catch(err => console.log(err));
-    // }
-
-    useEffect(() => {
-
-    }, [])
+    }
 
     return (
         <div className='loginWrapper'>
             <form className='loginForm'>
                 <div className='loginFormItem'>
                     <label htmlFor='email'>Email </label>
-                    <input type='text' id='email' name='email' onChange={(el) => setEmail(el.target.value)} />
+                    <input type='text' id='email' name='email' onChange={(el) => setEmail(el.target.value.trim())} />
                 </div>
                 <div className='loginFormItem'>
                     <label htmlFor='password'>Password </label>
                     <input type='password' id='password' name='password' onChange={(el) => setPassword(el.target.value)} />
                 </div>
                 <div className='buttonLogin'>
-                    <button onClick={() => {}}>Login</button>
-                    <button onClick={() => {}}>Sign Up</button>
+                    <button type='submit' onClick={handleLogin}>Login</button>
+                    <button onClick={() => { }}>Sign Up</button>
                 </div>
             </form>
         </div>

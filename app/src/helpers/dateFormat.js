@@ -1,21 +1,29 @@
-const dateFormat = date => {
+
+const dateFormat = inputDate => {
     const months = {
-        '01': 'January',
-        '02': 'February',
-        '03': 'March',
-        '04': 'April',
-        '05': 'May',
-        '06': 'June',
-        '07': 'July',
-        '08': 'August',
-        '09': 'September',
-        '10': 'October',
-        '11': 'November',
-        '12': 'December'
+        0: 'January',
+        1: 'February',
+        2: 'March',
+        3: 'April',
+        4: 'May',
+        5: 'June',
+        6: 'July',
+        7: 'August',
+        8: 'September',
+        9: 'October',
+        10: 'November',
+        11: 'December'
     };
-    const dateArr = date.split('-');
-    const [year, month, day] = dateArr;
-    return `${months[month]} ${day}, ${year}`;
+    // const dateArr = date.split('-');
+    // const [year, month, day] = dateArr;
+    // return `${months[month]} ${day}, ${year}`;
+    const formattedDate = new Date(inputDate * 1000);
+    const month = months[formattedDate.getMonth()];
+    const date = formattedDate.getDate();
+    const year = formattedDate.getFullYear();
+    
+    // return `${month} ${date}, ${year}`;
+    return formattedDate.toString();
 };
 
 export default dateFormat;

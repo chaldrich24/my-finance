@@ -1,30 +1,56 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import MonthSummary from './screens/MonthSummary';
-import { db, auth } from './firebase-config';
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import Login from './screens/Login';
-import { signOut, onAuthStateChanged } from 'firebase/auth';
+import { ApolloClient, createHttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import AuthService from './utils/auth';
 
 function App() {
-  const [cats, setCats] = useState([]);
-  const catCollectionRef = collection(db, 'categories');
   const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState();
+  let token = localStorage.getItem('token');
+
+  const httpLink = createHttpLink({
+    uri: 'http://localhost:4000//graphql',
+  });
+
+  const authLink = setContext((_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    token = localStorage.getItem('token');
+    // return the headers to the context so httpLink can read them
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : "",
+      }
+    }
+  });
+
+  const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache()
+  });
 
   useEffect(() => {
-    
-  }, []);
+    setLoggedIn(AuthService.loggedIn());
+  }, [])
+
+  const logout = () => {
+    AuthService.logout();
+    setLoggedIn(false);
+  }
 
   return (
-    <div className='page'>
-      <div className='nav'>
-        {user ? <button>Sign Out</button> : <button disabled style={{color: 'transparent'}}>G</button>}
+    <ApolloProvider client={client}>
+      <div className='page'>
+        <div className='nav'>
+          {loggedIn ? <button onClick={logout}>Sign Out</button> : <button disabled style={{ color: 'transparent', cursor: 'default' }}>G</button>}
+        </div>
+        <div className="App">
+          {!loggedIn ? <Login setLoggedIn={setLoggedIn} /> : <MonthSummary setLoggedIn={setLoggedIn} />}
+        </div>
       </div>
-      <div className="App">
-        {!user ? <Login setLoggedIn={setLoggedIn} setUser={setUser} user={user} /> : <MonthSummary user={user} categories={cats} />}
-      </div>
-    </div>
+    </ApolloProvider>
   );
 }
 

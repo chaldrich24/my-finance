@@ -26,7 +26,7 @@ module.exports = {
         } catch {
             console.log('Invalid token');
         }
-
+        console.log('done')
         return req;
     }   
 }
